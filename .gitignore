@@ -104,7 +104,8 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+websentry-env/
+websentry-env/*
 venv/
 ENV/
 env.bak/
