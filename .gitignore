@@ -1,4 +1,4 @@
-static/images/captures
+static/images/captures/*
 sentry_email.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
