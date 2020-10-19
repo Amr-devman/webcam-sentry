@@ -11,7 +11,11 @@
 			<dir class="row">
 			    <div id="my_camera" class="col-sm"></div>
 			    <div id="whitelist" class="col-md-3">
-			   		<ul id="whitelist-list" class="list-group"></ul>
+			   		<ul id="whitelist-list" class="list-group">
+			   			{% for name in whitelisted_name %}
+			   				<li> {{ name }} </li>
+			   			{% endfor %}
+			   		</ul>
 			    </div>
            	</div>
 
@@ -84,10 +88,10 @@
 		           	sentry_email = document.getElementById('sentry-email').value
 		            whitelisted_name = document.getElementById('sentry-whitelisted-person').value
 
-		            console.log(whitelisted_name)
+/*		            console.log(whitelisted_name)
 		            document.getElementById('whitelist-list').innerHTML += 
 					'<li> '+whitelisted_name+' </li>';
-
+*/
 
 		            $.getJSON($SCRIPT_ROOT + '/_photo_cap', {
 		                photo_cap: data_uri,
@@ -95,8 +99,11 @@
 		                whitelisted_name: whitelisted_name
 		            },function(data){
 		                var response = data.response;
-		            });
+		                location = location;
+		            })
 		        });
+
+
 		    }
 		</script>
 

@@ -94,8 +94,6 @@ def insert_query(db_file, cols, values, table):
 	conn.commit()
 
 
-
-
 def adapt_array(arr):
 	out = io.ByteIO()
 	np.save(out, arr)
