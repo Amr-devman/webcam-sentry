@@ -7,20 +7,42 @@ import numpy as np
 import os
 
 from email_functions import send_image
-
-
-placeholder_img = os.path.join('static', 'images/placeholder.jpg')
+from db_functions import select_query, insert_query
 
 
 @app.route('/setup_sentry')
 def setup_sentry():
-	return render_template('sentry_setup_template.html', placeholder_img=placeholder_img)
+	userid = request.cookies.get('userid')
+	db_file = f"{userid}.db"
+	results = select_query(db_file, ["email"], "creds")
+	
+	if len(results):
+		stored_cred = results["email"].values[-1]
+	else:
+		stored_cred = ""
+
+	print(stored_cred)
+	return render_template('sentry_setup_template.html', stored_cred=stored_cred)
 
 
 @app.route('/_photo_cap', methods=["GET", "POST"])
 def photo_cap():
 	name = request.args.get('whitelisted_name')
 	receiver_email = request.args.get('sentry_email')
+
+	userid = request.cookies.get('userid')
+	db_file = f"{userid}.db"
+	results = select_query(db_file, ["email"], "creds")
+	if len(results):
+		stored_cred = results["email"].values[-1]
+	else:
+		stored_cred = ""
+
+	if receiver_email != stored_cred:
+		values = (receiver_email,)
+		insert_query(db_file, ["email"], values ,"creds")
+		results = select_query(db_file, ["email"], "creds")
+
 
 	photo_base64 = request.args.get('photo_cap')
 	header, encoded = photo_base64.split(",", 1)

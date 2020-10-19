@@ -6,7 +6,6 @@
 		<title> Sentry Setup </title>
 	</head>
 	<body>
-	<!-- 	<img src="{{ placeholder_img }}" class="img-fluid" alt="Responsive image"> -->
 		<div id="my_photo_booth" class="container">
 
 			<dir class="row">
@@ -14,7 +13,6 @@
 			    <div id="whitelist" class="col-md-3">
 			   		<ul id="whitelist-list" class="list-group"></ul>
 			    </div>
-<!-- 			    <div id="results" class="col-lg">Your captured image will appear here...</div> -->
            	</div>
 
            	<div class="row no-gutters" >
@@ -23,7 +21,7 @@
 						<div class="input-group-prepend">
 					    	<span class="input-group-text" id="inputGroup-sizing-default">Sentry email</span>
 					  	</div>
-					  <input id ="sentry-email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+					  <input id ="sentry-email" value={{ stored_cred }} type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
 					</div>
 
 					<div class="input-group mb-3">

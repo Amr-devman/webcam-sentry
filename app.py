@@ -3,7 +3,7 @@ import os
 import random
 import string
 
-from db_functions import create_connection
+from db_functions import create_connection, create_creds_and_whitelist_tables
 app = Flask(__name__)
 
 
@@ -22,6 +22,7 @@ def entry_page():
 			userid = ''.join(random.choices(string.ascii_uppercase+string.digits,k=64))
 			resp.set_cookie('userid', userid, max_age=60*60*24*7)
 			create_connection(f"{userid}.db")
+			create_creds_and_whitelist_tables(f"{userid}.db")
 
 
 	return resp
