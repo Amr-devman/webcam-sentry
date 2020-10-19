@@ -8,6 +8,7 @@ import os
 
 from email_functions import send_image
 from db_functions import select_query, insert_query
+from face_recognition_functions import get_face_encodings
 
 
 @app.route('/setup_sentry')
@@ -30,6 +31,7 @@ def photo_cap():
 	name = request.args.get('whitelisted_name')
 	receiver_email = request.args.get('sentry_email')
 
+	#update credintials if they are different than stored
 	userid = request.cookies.get('userid')
 	db_file = f"{userid}.db"
 	results = select_query(db_file, ["email"], "creds")
@@ -42,6 +44,13 @@ def photo_cap():
 		values = (receiver_email,)
 		insert_query(db_file, ["email"], values ,"creds")
 		results = select_query(db_file, ["email"], "creds")
+
+
+	whitelist_results = select_query(db_file, ["name"], "whitelist")
+	whitelist_results = whitelist_results.values
+
+	if name.lower() not in whitelist_results:
+		values = (name.lower(),)
 
 
 	photo_base64 = request.args.get('photo_cap')
