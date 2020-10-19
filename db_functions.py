@@ -94,6 +94,18 @@ def insert_query(db_file, cols, values, table):
 	conn.commit()
 
 
+def clear_whitelist_from_db(db_file, table):
+	conn = None
+	db_filepath = os.path.join("dbs", db_file)
+	conn = sqlite3.connect(db_filepath)
+	cursor = conn.cursor()
+
+	query = f"DELETE FROM {table}"
+	cursor.execute(query)
+	conn.commit()
+
+
+
 def adapt_array(arr):
 	out = io.ByteIO()
 	np.save(out, arr)

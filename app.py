@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 
-import sentry_setup_routes
+import sentry_setup_routes, sentry_run_routes
 
 #create cookies for new user
 

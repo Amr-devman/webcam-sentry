@@ -7,7 +7,7 @@ import numpy as np
 import os
 
 from email_functions import send_image
-from db_functions import select_query, insert_query
+from db_functions import select_query, insert_query, clear_whitelist_from_db
 from face_recognition_functions import get_face_encodings
 
 
@@ -75,3 +75,13 @@ def photo_cap():
 	response = 'whitelisted face'
 
 	return response
+
+@app.route('/_clear_whitelist', methods=["GET", "POST"])
+def clear_whitelist():
+	userid = request.cookies.get('userid')
+	db_file = f"{userid}.db"
+	clear_whitelist_from_db(db_file, "whitelist")
+
+	return jsonify("whitelist cleared")
+
+	
