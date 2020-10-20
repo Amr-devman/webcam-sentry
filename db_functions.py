@@ -107,12 +107,12 @@ def clear_whitelist_from_db(db_file, table):
 
 
 def adapt_array(arr):
-	out = io.ByteIO()
+	out = io.BytesIO()
 	np.save(out, arr)
 	out.seek(0)
 	return sqlite3.Binary(out.read())
 
 def convert_array(text):
-	out = io.ByteIO(text)
+	out = io.BytesIO(text)
 	out.seek(0)
 	return np.load(out)

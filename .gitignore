@@ -1,6 +1,8 @@
 static/images/captures/*
 sentry_email.json
 dbs/*
+prev_images/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
