@@ -7,7 +7,7 @@ import numpy as np
 import os
 
 from email_functions import send_image
-from db_functions import select_query, insert_query, clear_whitelist_from_db
+from db_functions import select_query, insert_query, clear_whitelist_from_db, encode_arr
 from face_recognition_functions import get_face_encodings
 
 
@@ -60,16 +60,18 @@ def photo_cap():
 	whitelist_results = whitelist_results.values
 
 	if name.lower() not in whitelist_results:
-		values = (name.lower(), get_face_encodings(img_np))
+		values = (name.lower(), encode_arr(get_face_encodings(img_np)))
 		insert_query(db_file, ["name", "embeddings"], values ,"whitelist")
 
 
-		with open(os.path.join("./static/images/captures",image_name), "wb") as f:
+		with open(os.path.join("./images/captures",image_name), "wb") as f:
 			f.write(binary_data)
 
 		send_image( receiver_email, subject="Sentry is whitelisting this person !",
 					body="Hey, you have requested to whitelist this person",
 					image_name=name)
+
+		os.remove(os.path.join("./images/captures",image_name))
 
 	#facial recognition operations
 	response = 'whitelisted face'

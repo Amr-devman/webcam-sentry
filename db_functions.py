@@ -1,11 +1,14 @@
-import os
 import sqlite3
 from sqlite3 import Error
-import numpy as np
-import io
-import pandas as pd
 
-#creates a new swlite db for the user
+import numpy as np
+import pandas as pd
+import io
+import cv2
+import base64
+import os
+
+
 def create_connection(db_file):
 
 	conn = None
@@ -27,22 +30,19 @@ def create_creds_and_whitelist_tables(db_file):
 	db_filepath = os.path.join("dbs", db_file)
 
 	try:
-		conn = sqlite3.connect(db_filepath)
+		conn = sqlite3.connect(db_filepath, detect_types=sqlite3.PARSE_DECLTYPES)
 	except Error as e:
 		print(e)
+
+	#creates a new swlite db for the user
 
 	sql_create_stored_creds_table = """ CREATE TABLE IF NOT EXISTS creds(
 											email text NOT NULL
 											); """
 
-	#store arrays as text
-	sqlite3.register_adapter(np.ndarray, adapt_array)
-	#converts stored numpy text to numpy array
-	sqlite3.register_converter("array", convert_array)
-
 	sql_create_stored_whitelist_table = """ CREATE TABLE IF NOT EXISTS whitelist(
 											name text NOT NULL,
-											embeddings array NOT NULL
+											embeddings blob NOT NULL
 											); """
 
 	cursor = conn.cursor()
@@ -106,13 +106,11 @@ def clear_whitelist_from_db(db_file, table):
 
 
 
-def adapt_array(arr):
-	out = io.BytesIO()
-	np.save(out, arr)
-	out.seek(0)
-	return sqlite3.Binary(out.read())
+def encode_arr(arr):
+	base64_arr = base64.b64encode(arr)
+	return base64_arr
 
-def convert_array(text):
-	out = io.BytesIO(text)
-	out.seek(0)
-	return np.load(out)
+def decode_arr(byte_data):
+	byte_data = base64.b64decode(byte_data)
+	nparr = np.fromstring(byte_data)
+	return nparr

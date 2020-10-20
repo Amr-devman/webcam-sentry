@@ -9,7 +9,7 @@ import base64
 import imutils
 
 from email_functions import send_image
-from db_functions import select_query, convert_array
+from db_functions import select_query
 from face_recognition_functions import detect_and_match_faces
 
 
@@ -58,6 +58,7 @@ def _motion_detection():
 	contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	contours = imutils.grab_contours(contours)
 
+	suspects = []
 
 	for idx, c in enumerate(contours):
 		if cv2.contourArea(c) < 100:
@@ -70,13 +71,14 @@ def _motion_detection():
 				suspects.append(img_np_copy[ymin:ymin+height, xmin:xmin+width, :])
 
 				if len(suspects) > 0:
-					temp_file_path = os.path.join("./static/images/captures",f"suspect_{idx}")
-					cv2.imwrite(temp_file_path, img_np_copy[ymin:ymin+height, xmin:xmin+width, :])
+					temp_file_path = os.path.join("./images/captures",f"suspect_{idx}.jpg")
 
+					temp_img = cv2.cvtColor(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], cv2.COLOR_BGR2RGB)
+					cv2.imwrite(temp_file_path, temp_img)
 					send_image( receiver_email,
 								"Sentry Alert",
 								"An unidentified person was spotted by the sentry",
-								temp_file_path)
+								f"suspect_{idx}")
 
 					os.remove(temp_file_path)
 

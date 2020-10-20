@@ -2,10 +2,13 @@ from flask import Flask, redirect, url_for, render_template, request, jsonify, m
 import os
 import random
 import string
+import logging 
 
 from db_functions import create_connection, create_creds_and_whitelist_tables
-app = Flask(__name__)
 
+app = Flask(__name__)
+log = logging.getLogger("werkzeug")
+log.disabled = True
 
 
 import sentry_setup_routes, sentry_run_routes
@@ -30,3 +33,5 @@ def entry_page():
 
 if __name__ == '__main__':
 	app.run(debug=True,host='0.0.0.0')
+	os.system("rm prev_images/*")
+

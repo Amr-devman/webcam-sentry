@@ -35,7 +35,7 @@ def send_image(receiver_email, subject, body, image_name):
 		# Add body to email
 		message.attach(MIMEText(body, "plain"))
 
-		filename = f"./static/images/captures/{image_name}.jpg"  # In same directory as script
+		filename = f"./images/captures/{image_name}.jpg"  # In same directory as script
 
 		# Open image file in binary mode
 		with open(filename, "rb") as attachment:
