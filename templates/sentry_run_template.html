@@ -12,12 +12,17 @@
 			  	width: 40%;
 			}
 		</style>
-		<title> Sentry Setup </title>
+		<title> Activate Sentry </title>
 	</head>
 	<body>
 		<div id="my_photo_booth" class="image-container">
 			<div id="my_camera"></div>
-        </div>
+				<div id="toggle-visibility" class="text-center">
+		            <p class="text-center mx-auto">Sentry has been activated, you may hide the webcam to keep it stealthy</p>
+
+		            <input id ="toggle_button" type=button class="btn btn-success btn-squared" value="Hide webcam" onClick="toggle_visibility()">
+	        	</div>
+
 
 		<!-- bootstrap element stuff -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -52,6 +57,18 @@
                 flip_horiz: true
             });
             Webcam.attach( '#my_camera' );
+            //$("#my_camera").css("visibility", "hidden")
+
+
+            function toggle_visibility(){
+            	if ($("#my_camera").is(":visible")){
+            		document.getElementById('toggle_button').value = "Show webcam" 
+            	}
+            	else if($("#my_camera").is(":hidden")){
+            		document.getElementById('toggle_button').value = "Hide webcam" 
+            	}	
+            	$("#my_camera").toggle()
+            }
         </script>
 		<script language="JavaScript">
 			var timer = setInterval(pass_feed_to_backend, 2000)
@@ -59,7 +76,6 @@
 
 			function pass_feed_to_backend(){
 		        // actually snap photo (from preview freeze).
-		        console.log("I was called")
 		        Webcam.snap( function(data_uri) {
 		            $.getJSON($SCRIPT_ROOT + '/_motion_detection', {
 		                photo_cap: data_uri,
