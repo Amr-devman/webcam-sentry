@@ -10,6 +10,7 @@ Frontend:
   1. Bootstrap
   2. jQuery
   3. JavaScript
+  
 Backend:
   1. Flask (Python)
   2. SQLite3
