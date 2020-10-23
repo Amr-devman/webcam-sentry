@@ -3,7 +3,14 @@
 Webcam sentry is a web app that allows you to monitor your room when you are not around, all you need is a browser and a webcam!
 
 ## How it works
-Webcam sentry will allow you to whitelist people you trust to be in your room, however, if any else tries to enter the sentry will notify you sending you an email with suspect's face in frame. 
+Webcam sentry will allow you to whitelist people you trust to be in your room, however, if anyon else tries to enter the sentry will notify you sending you an email with suspect's face in frame. 
+
+## How to run
+run the following command to start the flask server:
+
+```bash
+python app.py
+```
 
 ## Tech stack
 Frontend:
