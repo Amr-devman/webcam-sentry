@@ -6,11 +6,11 @@ import cv2
 import numpy as np
 import os
 import base64
-import imutils
+# import imutils
 
 from email_functions import send_image
-from db_functions import select_query
-from face_recognition_functions import detect_and_match_faces
+# from db_functions import select_query
+# from face_recognition_functions import detect_and_match_faces
 
 
 
@@ -19,8 +19,8 @@ def activate_sentry():
 	return render_template('sentry_run_template.html')
 
 
-@app.route('/_motion_detection', methods=["GET", "POST"])
-def _motion_detection():
+# @app.route('/_motion_detection', methods=["GET", "POST"])
+# def _motion_detection():
 	userid = request.cookies.get('userid')
 	
 	#file path for the first frame
