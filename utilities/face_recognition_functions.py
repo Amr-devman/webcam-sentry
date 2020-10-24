@@ -1,7 +1,7 @@
 import face_recognition
 import numpy as np
 
-from db_functions import select_query, decode_arr
+from utilities.db_functions import select_query, decode_arr
 
 #wrapper function to get face encodings
 def get_face_encodings(image):

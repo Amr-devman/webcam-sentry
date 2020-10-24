@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta, date
 
-from db_functions import create_houskeeper , select_query, insert_query
+from utilities.db_functions import create_houskeeper , select_query, insert_query
 
 
 def remove_old_data():
