@@ -58,7 +58,6 @@ def _motion_detection():
 	contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	contours = imutils.grab_contours(contours)
 
-	suspects = []
 
 	for idx, c in enumerate(contours):
 		if cv2.contourArea(c) < 100:
@@ -68,19 +67,15 @@ def _motion_detection():
 			img_np_copy = img_np.copy()
 			unmatched = detect_and_match_faces(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], userid)
 			if (unmatched != 0) and (unmatched != -99):
-				suspects.append(img_np_copy[ymin:ymin+height, xmin:xmin+width, :])
+				temp_file_path = os.path.join("./images/captures",f"suspect_{idx}.jpg")
+				temp_img = cv2.cvtColor(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], cv2.COLOR_BGR2RGB)
+				cv2.imwrite(temp_file_path, temp_img)
+				send_image( receiver_email,
+							"Sentry Alert",
+							"An unidentified person was spotted by the sentry",
+							f"suspect_{idx}")
 
-				if len(suspects) > 0:
-					temp_file_path = os.path.join("./images/captures",f"suspect_{idx}.jpg")
-
-					temp_img = cv2.cvtColor(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], cv2.COLOR_BGR2RGB)
-					cv2.imwrite(temp_file_path, temp_img)
-					send_image( receiver_email,
-								"Sentry Alert",
-								"An unidentified person was spotted by the sentry",
-								f"suspect_{idx}")
-
-					os.remove(temp_file_path)
+				os.remove(temp_file_path)
 
 	np.save(prev_img_filepath, gray)
 	return jsonify("Detection done")
