@@ -36,8 +36,7 @@ atexit.register(lambda: scheduler.shutdown())
 
 import sentry_setup_routes, sentry_run_routes
 
-#create cookies for new user
-
+#create a cookie for new user and initialize a db for the user to data
 @app.route('/', methods=["GET"])
 def entry_page():
 	if request.method =="GET":

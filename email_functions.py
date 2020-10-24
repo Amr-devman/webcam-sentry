@@ -8,6 +8,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def get_context_and_creds(secret_file='sentry_email.json', port=465):
+	'''
+		replace secret file with your own credentials, secret file
+		contains the email credentials that the sentry will use to send
+		the automated messages
+	'''
 	port = 465  # For SSL
 	with open(secret_file) as f:
 		data = json.load(f)

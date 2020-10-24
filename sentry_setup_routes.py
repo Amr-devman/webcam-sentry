@@ -20,6 +20,8 @@ def setup_sentry():
 
 	whitelisted_name = whitelist["name"].values
 
+	#if there is a previous cred that was stored in the table, then autofill the
+	#sentry mail feild, otherwise keep it empty
 	if len(results):
 		stored_cred = results["email"].values[-1]
 	else:
@@ -30,6 +32,7 @@ def setup_sentry():
 
 @app.route('/_photo_cap', methods=["GET", "POST"])
 def photo_cap():
+	#get the 
 	name = request.args.get('whitelisted_name')
 	receiver_email = request.args.get('sentry_email')
 
@@ -60,18 +63,20 @@ def photo_cap():
 	whitelist_results = whitelist_results.values
 
 	if name.lower() not in whitelist_results:
+		#if a new peron is being whitelisted then we add him to the whitelist table,
+		#else we ignore as we dont want duplicate entries
 		values = (name.lower(), encode_arr(get_face_encodings(img_np)))
 		insert_query(db_file, ["name", "embeddings"], values ,"whitelist")
 
-
-		with open(os.path.join("./images/captures",image_name), "wb") as f:
+		temp_img = os.path.join("./images/captures",image_name)
+		with open(temp_img, "wb") as f:
 			f.write(binary_data)
 
 		send_image( receiver_email, subject="Sentry is whitelisting this person !",
 					body="Hey, you have requested to whitelist this person",
 					image_name=name)
 
-		os.remove(os.path.join("./images/captures",image_name))
+		os.remove(temp_img)
 
 	#facial recognition operations
 	response = 'whitelisted face'
@@ -80,6 +85,9 @@ def photo_cap():
 
 @app.route('/_clear_whitelist', methods=["GET", "POST"])
 def clear_whitelist():
+	'''
+		clears whitelist when the user clicks the option
+	'''
 	userid = request.cookies.get('userid')
 	db_file = f"{userid}.db"
 	clear_whitelist_from_db(db_file, "whitelist")

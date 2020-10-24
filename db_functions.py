@@ -10,11 +10,12 @@ import os
 
 
 def create_connection(db_file):
+	'''
+		this function creates a db with the db_file name
+	'''
 
 	conn = None
-
 	db_filepath = os.path.join("dbs", db_file)
-
 	try:
 		conn = sqlite3.connect(db_filepath)
 	except Error as e:
@@ -34,7 +35,7 @@ def create_creds_and_whitelist_tables(db_file):
 	except Error as e:
 		print(e)
 
-	#creates a new swlite db for the user
+	#creates a new sqlite db for the user
 
 	sql_create_stored_creds_table = """ CREATE TABLE IF NOT EXISTS creds(
 											email text NOT NULL
@@ -50,6 +51,12 @@ def create_creds_and_whitelist_tables(db_file):
 	cursor.execute(sql_create_stored_whitelist_table)
 
 def create_houskeeper(db_file="housekeeper"):
+	'''
+		the function just creates the housekeeping db
+		if its created then its just a noop function,
+		it will do nothing
+	'''
+
 	db_filepath = os.path.join("dbs", f"{db_file}.db")
 	create_connection(f"{db_file}.db")
 
@@ -75,11 +82,8 @@ def select_query(db_file, cols, table):
 	"""
 
 	conn = None
-
 	db_filepath = os.path.join("dbs", db_file)
-
 	conn = sqlite3.connect(db_filepath)
-
 
 	cols_string = "".join(col+" " if col==cols[-1] else col+", " for col in cols)
 	query = "SELECT "+cols_string+"FROM "+table
@@ -93,13 +97,12 @@ def insert_query(db_file, cols, values, table):
 	""" 
 		db_file: from the cookie
 		cols: the columns the user wants to select
+		values: the values to be added per cols
 		table: table to query from
 	"""
 	
 	conn = None
-
 	db_filepath = os.path.join("dbs", db_file)
-
 	conn = sqlite3.connect(db_filepath)
 
 
