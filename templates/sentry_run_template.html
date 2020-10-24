@@ -37,7 +37,7 @@
 		<!-- Configure a few settings and attach camera -->
 		<script language="javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
         <script src="{{url_for('static', filename='js/set_webcam.js') }}"></script>
-        <!-- <script src="{{url_for('static', filename='js/toggle_visibility.js') }}"></script> -->
+        <script src="{{url_for('static', filename='js/toggle_visibility.js') }}"></script>
         <script src="{{url_for('static', filename='js/pass_feed_to_backend.js') }}"></script>
 	</body>
 </html>

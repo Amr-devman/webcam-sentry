@@ -24,29 +24,43 @@
                             <ol> {{ name }} </ol>
                         {% endfor %}
                     </ul>
-                    
-                </div>
-            
+                </div>    
            </div>
-                </div>
+        </div>
 
-                <div class="row no-gutters" style="text-align: center; margin-bottom: 10pt;">
-                    <div id="pre_take_buttons" class="col-sm">
-                        <input type=button class="btn btn-success btn-squared" value="Add to WhiteList" onClick="preview_snapshot()">
+            <div class="row no-gutters" >
+               <div class="col-lg-6 offset-sm-2"> 
+                   <div class="input-group mb-3">
+                        <!-- <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Sentry email</span>
+                        </div> -->
+                        <input id ="sentry-email" value='{{ stored_cred }}' placeholder="Sentry Email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                    
-                    <div id="clear_whitelist_button" class="col-sm">
-                        <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
+
+                    <div class="input-group mb-3">
+                        <!-- <div class="input-group-prepend"> -->
+                            <!-- <span class="input-group-text" id="inputGroup-sizing-default"></span> -->
+                        <!-- </div> -->
+                        <input id ="sentry-whitelisted-person" placeholder="Name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
-                    
-                    <div id="activate_sentry_button" class="col-sm">
-                        <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
+
+                    <div class="row no-gutters" >
+                        <div id="pre_take_buttons" class="col-sm">
+                            <input type=button class="btn btn-success btn-squared" value="Add to WhiteList" onClick="preview_snapshot()">
+                        </div>
+                        
+                        <div id="clear_whitelist_button" class="col-sm">
+                            <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
+                        </div>
+                        
+                        <div id="activate_sentry_button" class="col-sm">
+                            <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
+                        </div>
                     </div>
+
                 </div>
 
             </div>
-        </div>
-    </div>
 
             <!-- bootstrap element stuff -->
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -59,7 +73,6 @@
             <!-- webcamjs module -->
             <script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
             <!-- Configure a few settings and attach camera -->
-
             <script language="javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
             <script src="{{url_for('static', filename='js/set_webcam.js') }}"></script>
             <!-- javascript functions to save image and return to the backend -->
