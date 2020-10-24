@@ -30,6 +30,6 @@ Face recognition is done using the following library https://github.com/ageitgey
 
 ## TODO
 1. Sync webpage updates with the completion of AJAX requests
-2. Housekeeping functionality to remove old user data
+2. Housekeeping functionality to remove old user data [DONE]
 3. Use blockchain to store user's data for added security
 4. Try to do a better job at using bootstrap :(

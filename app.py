@@ -1,5 +1,9 @@
 from flask import Flask, redirect, url_for, render_template, request, jsonify, make_response
 from flask_socketio import SocketIO
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
+import atexit
+
 import os
 import random
 import string
@@ -7,12 +11,27 @@ import logging
 
 
 from db_functions import create_connection, create_creds_and_whitelist_tables
+from housekeeping_functions import remove_old_data
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 
+## comment this out if you want to see python print statements
+#
 # log = logging.getLogger("werkzeug")
 # log.disabled = True
+
+
+
+## we schedule a housekeeping function to run every hour, the task will remove
+## old sqlite3 dbs if they exceed the 7 days data storage limit alloted for each user
+## checks everyday
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=remove_old_data , trigger="interval", seconds=60*60*24)
+scheduler.start()
+
+## kill the scheduled process when  the flask app is shutdown
+atexit.register(lambda: scheduler.shutdown())
 
 
 import sentry_setup_routes, sentry_run_routes
@@ -25,7 +44,6 @@ def entry_page():
 		resp = make_response(redirect(url_for('setup_sentry')))
 
 		if not request.cookies.get('userid'):
-			print("here")
 			userid = ''.join(random.choices(string.ascii_uppercase+string.digits,k=64))
 			resp.set_cookie('userid', userid, max_age=60*60*24*7)
 			create_connection(f"{userid}.db")

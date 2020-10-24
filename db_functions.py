@@ -49,6 +49,24 @@ def create_creds_and_whitelist_tables(db_file):
 	cursor.execute(sql_create_stored_creds_table)
 	cursor.execute(sql_create_stored_whitelist_table)
 
+def create_houskeeper(db_file="housekeeper"):
+	db_filepath = os.path.join("dbs", f"{db_file}.db")
+	create_connection(f"{db_file}.db")
+
+	conn = sqlite3.connect(db_filepath)
+
+	sql_create_housekeeper_table= """ CREATE TABLE IF NOT EXISTS keeper(
+											userid text NOT NULL,
+											join_date datetime NOT NULL,
+											expiry_date datetime NOT NULL
+											); """
+
+	cursor = conn.cursor()
+	cursor.execute(sql_create_housekeeper_table)
+
+
+
+
 def select_query(db_file, cols, table):
 	""" 
 		db_file: from the cookie
