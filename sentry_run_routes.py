@@ -21,6 +21,7 @@ def activate_sentry():
 
 @app.route('/_motion_detection', methods=["GET", "POST"])
 def _motion_detection():
+	#get userid from the cookie
 	userid = request.cookies.get('userid')
 	
 	#file path for the first frame
@@ -32,14 +33,15 @@ def _motion_detection():
 	results = select_query(db_file, ["email"], "creds")
 	receiver_email = results["email"].values[-1]
 
+	#get image from the frontend and convert to an array
 	photo_base64 = request.args.get('photo_cap')
 	header, encoded = photo_base64.split(",", 1)
 	binary_data = base64.b64decode(encoded)
-
 	nparr = np.fromstring(binary_data, np.uint8)
+
+
 	img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 	img_np = cv2.cvtColor(img_np, cv2.COLOR_BGR2RGB)
-
 	gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
 	gray = cv2.GaussianBlur(gray, (11,11), 0)
 
@@ -67,6 +69,7 @@ def _motion_detection():
 			img_np_copy = img_np.copy()
 			unmatched = detect_and_match_faces(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], userid)
 			if (unmatched != 0) and (unmatched != -99):
+				# if a face is unmatched, report it to the user 
 				temp_file_path = os.path.join("./images/captures",f"suspect_{idx}.jpg")
 				temp_img = cv2.cvtColor(img_np_copy[ymin:ymin+height, xmin:xmin+width, :], cv2.COLOR_BGR2RGB)
 				cv2.imwrite(temp_file_path, temp_img)
@@ -77,6 +80,7 @@ def _motion_detection():
 
 				os.remove(temp_file_path)
 
+	#store the user's previous image
 	np.save(prev_img_filepath, gray)
 	return jsonify("Detection done")
 

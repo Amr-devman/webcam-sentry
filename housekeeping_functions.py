@@ -22,6 +22,9 @@ def remove_old_data():
 	for db in db_list:
 		db_without_extension = db.split(".")[0]
 		if db_without_extension not in stored_dbs["userid"].values:
+			#if the user details have not been stored in the keeper db
+			#then make a new entry
+
 			db_unix_epoch = os.path.getmtime(f"./dbs/{db}")
 			join_date = datetime.fromtimestamp(db_unix_epoch)
 			expiry_date = join_date + timedelta(days=7)
@@ -32,6 +35,8 @@ def remove_old_data():
 							"keeper")
 
 		else:
+			#if the user details are there then check if the user data has expired
+			#if so then remove the user data
 			stored_entry = stored_dbs.loc[stored_dbs["userid"] == db_without_extension]
 			expiry_date = stored_entry["expiry_date"].values[0]
 			expiry_date = datetime.strptime(expiry_date, "%Y-%m-%d %H:%M:%S.%f")
