@@ -8,29 +8,25 @@ import random
 import string
 import logging
 
-
-from db_functions import create_connection, create_creds_and_whitelist_tables
-from housekeeping_functions import remove_old_data
+from utilities.db_functions import create_connection, create_creds_and_whitelist_tables
+from utilities.housekeeping_functions import remove_old_data
 
 app = Flask(__name__)
 
-## comment this out if you want to see python print statements
-#
+# comment this out if you want to see python print statements
+
 # log = logging.getLogger("werkzeug")
 # log.disabled = True
 
-
-
-## we schedule a housekeeping function to run every hour, the task will remove
-## old sqlite3 dbs if they exceed the 7 days data storage limit alloted for each user
-## checks everyday
+# we schedule a housekeeping function to run every hour, the task will remove
+# old sqlite3 dbs if they exceed the 7 days data storage limit alloted for each user
+# checks everyday
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=remove_old_data , trigger="interval", seconds=60*60*24)
 scheduler.start()
 
 ## kill the scheduled process when  the flask app is shutdown
 atexit.register(lambda: scheduler.shutdown())
-
 
 import sentry_setup_routes, sentry_run_routes
 
@@ -45,8 +41,6 @@ def entry_page():
 			resp.set_cookie('userid', userid, max_age=60*60*24*7)
 			create_connection(f"{userid}.db")
 			create_creds_and_whitelist_tables(f"{userid}.db")
-
-
 	return resp
 
 

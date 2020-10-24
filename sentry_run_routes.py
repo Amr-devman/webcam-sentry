@@ -8,11 +8,9 @@ import os
 import base64
 import imutils
 
-from email_functions import send_image
-from db_functions import select_query
-from face_recognition_functions import detect_and_match_faces
-
-
+from utilities.email_functions import send_image
+from utilities.db_functions import select_query
+from utilities.face_recognition_functions import detect_and_match_faces
 
 @app.route('/activate_sentry')
 def activate_sentry():
