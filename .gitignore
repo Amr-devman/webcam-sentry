@@ -1,5 +1,5 @@
 static/images/captures/*
-sentry_email.json
+#sentry_email.json
 dbs/*
 prev_images/*
 
