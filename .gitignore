@@ -1,4 +1,4 @@
-static/images/captures/*
+images/captures/*
 #sentry_email.json
 dbs/*
 prev_images/*
