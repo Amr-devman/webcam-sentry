@@ -35,57 +35,9 @@
 		<!-- webcamjs module -->
 		<script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
 		<!-- Configure a few settings and attach camera -->
-        <script language="JavaScript">
-            Webcam.set({
-                // live preview size
-                width: 640,
-                height: 480,
-
-                // device capture size
-                dest_width: 640,
-                dest_height: 480,
-
-                // final cropped size
-                crop_width: 640,
-                crop_height: 640,
-
-                // format and quality
-                image_format: 'jpeg',
-                jpeg_quality: 90,
-
-                // flip horizontal (mirror mode)
-                flip_horiz: true
-            });
-            Webcam.attach( '#my_camera' );
-            //$("#my_camera").css("visibility", "hidden")
-
-
-            function toggle_visibility(){
-            	if ($("#my_camera").is(":visible")){
-            		document.getElementById('toggle_button').value = "Show webcam" 
-            	}
-            	else if($("#my_camera").is(":hidden")){
-            		document.getElementById('toggle_button').value = "Hide webcam" 
-            	}	
-            	$("#my_camera").toggle()
-            }
-        </script>
-		<script language="JavaScript">
-			var timer = setInterval(pass_feed_to_backend, 2000)
-			var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-
-			function pass_feed_to_backend(){
-		        // actually snap photo (from preview freeze).
-		        Webcam.snap( function(data_uri) {
-		            $.getJSON($SCRIPT_ROOT + '/_motion_detection', {
-		                photo_cap: data_uri,
-		            },function(data){
-		                var response = data.response;
-		            })
-
-			    });
-			}
-		</script>
-
+		<script language="javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+        <script src="{{url_for('static', filename='js/set_webcam.js') }}"></script>
+        <script src="{{url_for('static', filename='js/toggle_visibility.js') }}"></script>
+        <script src="{{url_for('static', filename='js/pass_feed_to_backend.js') }}"></script>
 	</body>
 </html>
