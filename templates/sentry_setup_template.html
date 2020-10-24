@@ -38,19 +38,9 @@
                     <div id="clear_whitelist_button" class="col-sm">
                         <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
                     </div>
-
-                    <div class="row no-gutters" >
-                        <div id="pre_take_buttons" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Add to WhiteList" onClick="preview_snapshot()">
-                        </div>
-                        
-                        <div id="clear_whitelist_button" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
-                        </div>
-                        
-                        <div id="activate_sentry_button" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
-                        </div>
+                    
+                    <div id="activate_sentry_button" class="col-sm">
+                        <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
                     </div>
                 </div>
 
