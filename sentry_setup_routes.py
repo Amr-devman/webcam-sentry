@@ -60,12 +60,9 @@ def photo_cap():
 
 	whitelist_results = select_query(db_file, ["name"], "whitelist")
 	whitelist_results = whitelist_results.values
-
 	if name.lower() not in whitelist_results:
-		#if a new peron is being whitelisted then we add him to the whitelist table,
-		#else we ignore as we dont want duplicate entries
 		values = (name.lower(), encode_arr(get_face_encodings(img_np)))
-		insert_query(db_file, ["name", "embeddings"], values ,"whitelist")
+		insert_query(db_file, ["name", "embeddings"], values, "whitelist")
 
 		temp_img = os.path.join("./images/captures",image_name)
 		with open(temp_img, "wb") as f:

@@ -2,82 +2,117 @@
 
 {% block content %}
 
-    <h1 class="text-xl-center text-white">Webcam Sentry</h1>
-    <h3 class="text-md-left mx-auto" style="width: 1000px;">Monitor your room with ease</h3>
-    <p class="text-md-left mx-auto" style="width: 1000px;">Webcam sentry
-    observes your surroundings and can detect people within its field of view.
-    People who are not whitelisted will be reported via an email to your phone,
-    you will need to whitelist your face first before you can activate the
-    sentry.</p> 
-    <p class="text-md-left mx-auto" style="width: 1000px;">P.S: Your data is
-    stored securely for 7 days after which it is deleted.</p>
-    <div id="my_photo_booth" class="container">
-        <div class="row">
-            <div id="my_camera" class="col-lg-right mx-auto bg-warning"></div>
+<h1 class="text-xl-center text-white">Webcam Sentry</h1>
+<h3 class="text-md-left mx-auto" style="width: 1000px;">Monitor your room with ease</h3>
+<p class="text-md-left mx-auto" style="width: 1000px;">Webcam sentry
+observes your surroundings and can detect people within its field of view.
+People who are not whitelisted will be reported via an email to your phone,
+you will need to whitelist your face first before you can activate the
+sentry.</p> 
+<p class="text-md-left mx-auto" style="width: 1000px;">P.S: Your data is
+stored securely for 7 days after which it is deleted.</p>
 
-                <div id="whitelist" class="col-md-3  bg-light">
-                    <p class="text-lg-center">
-                        Whitelisted names appear here
-                    </p>
-                    <ul id="whitelist-list" class="list-group">
-                        {% for name in whitelisted_name %}
-                            <ol> {{ name }} </ol>
-                        {% endfor %}
-                    </ul>
-                </div>    
-           </div>
+<div id="my_photo_booth" class="container">
+    <div class="row">
+        <div id="my_camera" class="col-lg-right mx-auto bg-warning"></div>
+        <div id="whitelist" class="col-md-3  bg-light">
+            <p class="text-lg-center">
+                Whitelisted names appear here
+            </p>
+            <ul id="whitelist-list" class="list-group">
+                {% for name in whitelisted_name %}
+                    <ol> {{ name }} </ol>
+                {% endfor %}
+            </ul>
+        </div>       
+    </div>
+</div>
+
+<div class="row no-gutters" >
+   <div class="col-lg-6 offset-sm-2"> 
+       <div class="input-group mb-3">
+            <!-- <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Sentry email</span>
+            </div> -->
+            <input id ="sentry-email" value='{{ stored_cred }}' placeholder="Sentry Email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
         </div>
 
-            <div class="row no-gutters" >
-               <div class="col-lg-6 offset-sm-2"> 
-                   <div class="input-group mb-3">
-                        <!-- <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Sentry email</span>
-                        </div> -->
-                        <input id ="sentry-email" value='{{ stored_cred }}' placeholder="Sentry Email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                    </div>
+        <div class="input-group mb-3">
+            <!-- <div class="input-group-prepend"> -->
+                <!-- <span class="input-group-text" id="inputGroup-sizing-default"></span> -->
+            <!-- </div> -->
+            <input id ="sentry-whitelisted-person" placeholder="Name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
 
-                    <div class="input-group mb-3">
-                        <!-- <div class="input-group-prepend"> -->
-                            <!-- <span class="input-group-text" id="inputGroup-sizing-default"></span> -->
-                        <!-- </div> -->
-                        <input id ="sentry-whitelisted-person" placeholder="Name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                    </div>
-
-                    <div class="row no-gutters" >
-                        <div id="pre_take_buttons" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Add to WhiteList" onClick="preview_snapshot()">
-                        </div>
-                        
-                        <div id="clear_whitelist_button" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
-                        </div>
-                        
-                        <div id="activate_sentry_button" class="col-sm">
-                            <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
-                        </div>
-                    </div>
-
-                </div>
-
+        <div class="row no-gutters" >
+            <div id="pre_take_buttons" class="col-sm">
+                <input type=button class="btn btn-success btn-squared" value="Add to WhiteList" onClick="preview_snapshot()">
             </div>
-
-            <!-- bootstrap element stuff -->
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-            <!-- calling in ajax to pass images from javascript to flask backend -->
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-            <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
-
-            <!-- webcamjs module -->
-            <script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
-            <!-- Configure a few settings and attach camera -->
-            <script language="javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
-            <script src="{{url_for('static', filename='js/set_webcam.js') }}"></script>
-            <!-- javascript functions to save image and return to the backend -->
-            <script src="{{url_for('static', filename='js/preview_snapshot.js') }}"></script>
-            <script src="{{url_for('static', filename='js/clear_whitelist.js') }}"></script>
+            
+            <div id="clear_whitelist_button" class="col-sm">
+                <input type=button class="btn btn-success btn-squared" value="Clear WhiteList" onClick="clear_whitelist()">
+            </div>
+            
+            <div id="activate_sentry_button" class="col-sm">
+                <input type=button class="btn btn-success btn-squared" value="Activate Sentry" onClick="window.location.href='{{ url_for( 'activate_sentry' ) }}';">
+            </div>
+        </div>
 
     </div>
+
+</div>
+
+
+<!-- bootstrap element stuff -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+<!-- calling in ajax to pass images from javascript to flask backend -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
+    
+<!-- webcamjs module -->
+<script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
+<!-- Configure a few settings and attach camera -->
+<script language="javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+<script src="{{url_for('static', filename='js/set_webcam.js') }}"></script>
+<!-- javascript functions to save image and return to the backend -->
+<script language="javascript">
+    function preview_snapshot() {
+    // actually snap photo (from preview freeze).
+    Webcam.snap( function(data_uri) {
+        // display results in page
+        sentry_email = document.getElementById('sentry-email').value
+        whitelisted_name = document.getElementById('sentry-whitelisted-person').value
+
+        $.when(add_to_whitelist_ajax()).done(function(response){window.location.href="{{ url_for( 'setup_sentry' ) }}";})
+
+        function add_to_whitelist_ajax(){
+            $.getJSON($SCRIPT_ROOT + '/_photo_cap', {
+                photo_cap: data_uri,
+                sentry_email: sentry_email,
+                whitelisted_name: whitelisted_name
+            },function(data){
+                var response = data.response;
+            })
+        }
+    });
+}
+
+function clear_whitelist() {
+    $.when(clear_whitelist_ajax()).done(function(response){window.location.href="{{ url_for( 'setup_sentry' ) }}";})
+    function clear_whitelist_ajax(){
+        $.getJSON($SCRIPT_ROOT + '/_clear_whitelist',
+            function(data){
+            //this function is nothing
+            console.log("Clearing WhiteList....")
+        });
+    }
+}
+</script>
+
+
+<!-- <script src="{{url_for('static', filename='js/preview_snapshot.js') }}"></script> -->
+<!-- <script src="{{url_for('static', filename='js/clear_whitelist.js') }}"></script> -->
 {% endblock %}

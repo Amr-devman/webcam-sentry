@@ -15,8 +15,8 @@ app = Flask(__name__)
 
 # comment this out if you want to see python print statements
 
-# log = logging.getLogger("werkzeug")
-# log.disabled = True
+log = logging.getLogger("werkzeug")
+log.disabled = True
 
 # we schedule a housekeeping function to run every hour, the task will remove
 # old sqlite3 dbs if they exceed the 7 days data storage limit alloted for each user
