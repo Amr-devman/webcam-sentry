@@ -1,5 +1,4 @@
 from flask import Flask, redirect, url_for, render_template, request, jsonify, make_response
-from flask_socketio import SocketIO
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
 import atexit
@@ -14,7 +13,6 @@ from db_functions import create_connection, create_creds_and_whitelist_tables
 from housekeeping_functions import remove_old_data
 
 app = Flask(__name__)
-socketio = SocketIO(app)
 
 ## comment this out if you want to see python print statements
 #
@@ -53,7 +51,7 @@ def entry_page():
 
 
 if __name__ == '__main__':
-	socketio.run(app, debug=True,host='0.0.0.0')
+	app.run(debug=True,host='0.0.0.0')
 	if len(os.listdir("prev_images")) > 0:
 		os.system("rm prev_images/*")
 
